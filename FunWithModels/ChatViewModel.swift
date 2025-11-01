@@ -25,26 +25,21 @@ class ChatViewModel: ObservableObject {
     
     func checkModelAvailability() {
         Task {
-            do {
-                let model = SystemLanguageModel.default
-                if await model.isAvailable {
-                    languageModel = model
-                    session = LanguageModelSession(
-                        model: model,
-                        instructions: {
-                            """
-                            You are a helpful, friendly AI assistant. 
-                            Provide clear, concise, and accurate responses.
-                            Be conversational but professional.
-                            If you're not sure about something, say so.
-                            """
-                        }
-                    )
-                } else {
-                    showModelUnavailableAlert = true
-                }
-            } catch {
-                print("Error initializing model: \(error)")
+            let model = SystemLanguageModel.default
+            if model.isAvailable {
+                languageModel = model
+                session = LanguageModelSession(
+                    model: model,
+                    instructions: {
+                        """
+                        You are a helpful, friendly AI assistant. 
+                        Provide clear, concise, and accurate responses.
+                        Be conversational but professional.
+                        If you're not sure about something, say so.
+                        """
+                    }
+                )
+            } else {
                 showModelUnavailableAlert = true
             }
         }
